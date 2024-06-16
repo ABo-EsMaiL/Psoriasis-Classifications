@@ -27,23 +27,22 @@ def predict(model, img_path):
     return predicted_class, confidence
 
 if __name__ == "__main__":
-    # Google Drive file IDs
+    # Google Drive file IDs (replace these with your actual file IDs)
     model_architecture_id = '13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7'
     model_weights_id = '1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6'
-    local_model_architecture = '../models/Acc97.json'
-    local_model_weights = '../models/Acc97.weights.h5'
+    local_model_architecture = '../models/'
+    local_model_weights = '../models/'
 
     # Download model files from Google Drive
     download_from_google_drive(model_architecture_id, local_model_architecture)
     download_from_google_drive(model_weights_id, local_model_weights)
 
-    # Load model architecture from JSON
-    with open(local_model_architecture, 'r') as json_file:
+    # Load model
+    with open(f'{local_model_architecture}Acc97.json', 'r') as json_file:
         model_json = json_file.read()
-    model = tf.keras.models.model_from_json(model_json)
 
-    # Load model weights
-    model.load_weights(local_model_weights)
+    model = tf.keras.models.model_from_json(model_json)
+    model.load_weights(f'{local_model_weights}Acc97.weights.h5')
 
     img_path = "../data/test_image.jpg"
     predicted_class, confidence = predict(model, img_path)

@@ -33,6 +33,9 @@ This project classifies 12 classes of diseases using a deep learning model built
    ```
 
 ## Usage
+```
+web: python src/app.py
+```
 
 ### Training
 

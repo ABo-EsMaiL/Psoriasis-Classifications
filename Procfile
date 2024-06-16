@@ -1,1 +1,1 @@
-web: python src/predict.py
+web: python src/app.py
