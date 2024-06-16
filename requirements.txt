@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 tensorflow
 matplotlib
 numpy
@@ -6,11 +5,3 @@ pandas
 scikit-learn
 seaborn
 gdown
-=======
-tensorflow
-matplotlib
-numpy
-pandas
-scikit-learn
-seaborn
->>>>>>> d98c3cfd36485f31a3fc81c67deb5745dff71eb9
