@@ -14,24 +14,32 @@ NUM_CLASSES = 12
 INPUT_SHAPE = (BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 class_names = ['Abnormal', 'Erythrodermic', 'Guttate', 'Inverse', 'Nail', 'Normal', 'Not Define', 'Palm Soles', 'Plaque', 'Psoriatic Arthritis', 'Pustular', 'Scalp']
 
-# Download model files from Google Drive
+# Google Drive file IDs (replace these with your actual file IDs)
 model_architecture_id = '13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7'
 model_weights_id = '1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6'
-local_model_architecture = 'models/'
-local_model_weights = 'models/'
+local_model_architecture = 'models/Acc97.json'
+local_model_weights = 'models/Acc97.weights.h5'
 
+def download_from_google_drive(file_id, file_name):
+    url = f'https://drive.google.com/uc?id={file_id}'
+    gdown.download(url, file_name, quiet=False)
+
+# Download model files if they don't exist
 if not os.path.exists(local_model_architecture):
-    gdown.download(f'https://drive.google.com/uc?id={model_architecture_id}', local_model_architecture, quiet=False)
+    download_from_google_drive(model_architecture_id, local_model_architecture)
 
 if not os.path.exists(local_model_weights):
-    gdown.download(f'https://drive.google.com/uc?id={model_weights_id}', local_model_weights, quiet=False)
+    download_from_google_drive(model_weights_id, local_model_weights)
 
 # Load model
-with open(f'{local_model_architecture}Acc97.json', 'r') as json_file:
-    model_json = json_file.read()
-
-model = tf.keras.models.model_from_json(model_json)
-model.load_weights(f'{local_model_weights}Acc97.weights.h5')
+try:
+    with open(local_model_architecture, 'r') as json_file:
+        model_json = json_file.read()
+    model = tf.keras.models.model_from_json(model_json)
+    model.load_weights(local_model_weights)
+except Exception as e:
+    print(f"Error loading model: {e}")
+    raise
 
 def predict_image(img_path):
     img = image.load_img(img_path, target_size=(IMAGE_SIZE, IMAGE_SIZE))
@@ -59,4 +67,6 @@ def upload_file():
     return render_template('index.html')
 
 if __name__ == '__main__':
+    if not os.path.exists('uploads'):
+        os.makedirs('uploads')
     app.run(debug=True)
