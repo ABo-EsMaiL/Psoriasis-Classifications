@@ -15,13 +15,8 @@ This project classifies 12 classes of diseases using a deep learning model built
 1. Clone the repository:
 
    ```bash
-<<<<<<< HEAD
-   git clone https://github.com/ABo-EsMaiL/Psoriasis-Classifications.git
-   cd Psoriasis-Classifications
-=======
    git clone https://github.com/ABo-EsMaiL/Psoriasis-Classification.git
    cd Psoriasis-Classification
->>>>>>> d98c3cfd36485f31a3fc81c67deb5745dff71eb9
    ```
 
 2. Install the required packages:
