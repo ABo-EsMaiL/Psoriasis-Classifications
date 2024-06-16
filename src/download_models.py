@@ -14,8 +14,8 @@ def download_from_google_drive(file_id, file_name):
         raise
 
 if __name__ == "__main__":
-    model_architecture_id = os.getenv('13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7')
-    model_weights_id = os.getenv('1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6')
+    model_architecture_id = '13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7'
+    model_weights_id = '1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6'
     local_model_architecture = '../models/Acc97.json'
     local_model_weights = '../models/Acc97.weights.h5'
 

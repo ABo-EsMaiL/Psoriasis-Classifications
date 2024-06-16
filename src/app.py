@@ -19,8 +19,8 @@ INPUT_SHAPE = (BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 class_names = ['Abnormal', 'Erythrodermic', 'Guttate', 'Inverse', 'Nail', 'Normal', 'Not Define', 'Palm Soles', 'Plaque', 'Psoriatic Arthritis', 'Pustular', 'Scalp']
 
 # Google Drive file IDs (replace these with your actual file IDs)
-model_architecture_id = os.getenv('13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7')
-model_weights_id = os.getenv('1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6')
+model_architecture_id = '13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7'
+model_weights_id = '1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6'
 local_model_architecture = 'models/Acc97.json'
 local_model_weights = 'models/Acc97.weights.h5'
 
