@@ -15,6 +15,9 @@ app = Flask(__name__)
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
+# Suppress TensorFlow warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 BATCH_SIZE = 32
 IMAGE_SIZE = 299
 CHANNELS = 3
