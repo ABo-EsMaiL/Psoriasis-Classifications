@@ -4,6 +4,10 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from flask import Flask, request, render_template, redirect, url_for
 import numpy as np
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
@@ -15,14 +19,19 @@ INPUT_SHAPE = (BATCH_SIZE, IMAGE_SIZE, IMAGE_SIZE, CHANNELS)
 class_names = ['Abnormal', 'Erythrodermic', 'Guttate', 'Inverse', 'Nail', 'Normal', 'Not Define', 'Palm Soles', 'Plaque', 'Psoriatic Arthritis', 'Pustular', 'Scalp']
 
 # Google Drive file IDs (replace these with your actual file IDs)
-model_architecture_id = '13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7'
-model_weights_id = '1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6'
+model_architecture_id = os.getenv('13qxsIj4JLJRFJzl3RwXz4ggQzfiEGql7')
+model_weights_id = os.getenv('1XnTblJ4xx74wcXXtGD0_wO_CgvyKQqb6')
 local_model_architecture = 'models/Acc97.json'
 local_model_weights = 'models/Acc97.weights.h5'
 
 def download_from_google_drive(file_id, file_name):
-    url = f'https://drive.google.com/uc?id={file_id}'
-    gdown.download(url, file_name, quiet=False)
+    try:
+        url = f'https://drive.google.com/uc?id={file_id}'
+        gdown.download(url, file_name, quiet=False)
+        logging.info(f"Downloaded {file_name} from Google Drive")
+    except Exception as e:
+        logging.error(f"Failed to download {file_name} from Google Drive: {e}")
+        raise
 
 # Download model files if they don't exist
 if not os.path.exists(local_model_architecture):
@@ -37,19 +46,24 @@ try:
         model_json = json_file.read()
     model = tf.keras.models.model_from_json(model_json)
     model.load_weights(local_model_weights)
+    logging.info("Model loaded successfully")
 except Exception as e:
-    print(f"Error loading model: {e}")
+    logging.error(f"Error loading model: {e}")
     raise
 
 def predict_image(img_path):
-    img = image.load_img(img_path, target_size=(IMAGE_SIZE, IMAGE_SIZE))
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0
+    try:
+        img = image.load_img(img_path, target_size=(IMAGE_SIZE, IMAGE_SIZE))
+        img_array = image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-    predictions = model.predict(img_array)
-    predicted_class = class_names[np.argmax(predictions[0])]
-    confidence = round(100 * (np.max(predictions[0])), 2)
-    return predicted_class, confidence
+        predictions = model.predict(img_array)
+        predicted_class = class_names[np.argmax(predictions[0])]
+        confidence = round(100 * (np.max(predictions[0])), 2)
+        return predicted_class, confidence
+    except Exception as e:
+        logging.error(f"Error predicting image: {e}")
+        raise
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
