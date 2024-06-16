@@ -11,6 +11,10 @@ logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
+# Set TensorFlow environment variables
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 BATCH_SIZE = 32
 IMAGE_SIZE = 299
 CHANNELS = 3
